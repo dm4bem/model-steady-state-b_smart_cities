@@ -9,8 +9,8 @@ Sci = 78             # m² surface area of concrete & insulation of the 4 walls
 Sc = 13              # m² surface area of concrete of the 1 wall
 w = 0.2     # m, wall thickness
 S = 20.0    # m², wall surface area
-Sexta = 5*3-3+4*3*2
-Sextb 5*3-3+6*3*2
+Sexta = 5*3-3+4*3*2     # Surface of outside walls for room a
+Sextb = 5*3-3+6*3*2       # Surface of outside walls for room b
 T0 = -5.0   # °C, outside air temperature
 Ti = 24.0   # °C, inside air temperature
 λ = 1.0     # W/(m·K), thermal conductivity
@@ -116,12 +116,14 @@ pd.DataFrame(C, columns=['Capacity'])
 C['Air'] = air['Density'] * air['Specific heat'] * Va
 pd.DataFrame(C, columns=['Capacity'])
 
-Φo1 = α * Sexta * E
-Φo2 = α * Sextb * E
+Φoa = α * Sexta * E
+Φob = α * Sextb * E
 Φia1 =  E * Sg * 0.2
 Φia2 =  E * Sg * 0.8
 Φib1 =  E * Sg * 0.8
 Φib2 =  E * Sg * 0.2
+Φa = 0
+
 
 # temperature nodes
 θ = ['θ0', 'θ1', 'θ2', 'θ3', 'θ4', 'θ5', 'θ6', 'θ7', 'θ8', 'θ9', 'θ10', 'θ11', 'θ12', 'θ13', 'θ14', 'θ15', 'θ16', 'θ17', 'θ18']
@@ -194,6 +196,6 @@ b = pd.Series([T0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, T0, 0, T0, 0, 0, 0,
               index=q)
 
 #heat flow source vector
-f = pd.Series(['Φoa', 0, 0, 0, 'Φia1', 0, 'Φia2', 0,'Φib2', 0, 'Φib1', 0, 0, 0, 'Φob', 'Qa', 0, 0, 'Φa'],
+f = pd.Series([Φoa, 0, 0, 0, Φia1, 0, Φia2, 0, Φib2, 0, Φib1, 0, 0, 0, Φob, Φa, 0, 0, Φa],
               index=θ)
 
