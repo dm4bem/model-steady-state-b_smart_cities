@@ -124,7 +124,6 @@ pd.DataFrame(C, columns=['Capacity'])
 Φib2 =  E * Sg * 0.2
 Φa = 0
 
-
 # temperature nodes
 θ = ['θ0', 'θ1', 'θ2', 'θ3', 'θ4', 'θ5', 'θ6', 'θ7', 'θ8', 'θ9', 'θ10', 'θ11', 'θ12', 'θ13', 'θ14', 'θ15', 'θ16', 'θ17', 'θ18']
 
@@ -191,6 +190,17 @@ np.set_printoptions(precision=3, threshold=16, suppress=True)
 pd.set_option("display.precision", 1)
 pd.DataFrame(G, index=q)
 
+# # Capacities
+neglect_air_glass = False
+
+if neglect_air_glass:
+    C = np.array([0, C['Layer_out'], 0, C['Layer_in'], 0, 0, 0, C['Air'], 0, 0, 0, C['Layer_in'], 0, C['Layer_out'], 0, 0, 0, 0, 0])
+else:
+    C = np.array([0, C['Layer_out'], 0, C['Layer_in'], 0, 0, 0, C['Air'], 0, 0, 0, C['Layer_in'], 0, C['Layer_out'], 0, C['Glass'], 0, 0, C['Glass']])
+
+pd.set_option("display.precision", 3)
+pd.DataFrame(C, index=θ)
+
 #temperature source network
 b = pd.Series([T0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, T0, 0, T0, 0, 0, 0, 0, 0, 0, T0],
               index=q)
@@ -198,4 +208,3 @@ b = pd.Series([T0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, T0, 0, T0, 0, 0, 0,
 #heat flow source vector
 f = pd.Series([Φoa, 0, 0, 0, Φia1, 0, Φia2, 0, Φib2, 0, Φib1, 0, 0, 0, Φob, Φa, 0, 0, Φa],
               index=θ)
-
